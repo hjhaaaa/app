@@ -1,0 +1,6 @@
+C:\Users\33069\source\repos\App\INFOModel\bin\Debug\INFOModel.dll
+C:\Users\33069\source\repos\App\INFOModel\bin\Debug\INFOModel.pdb
+C:\Users\33069\source\repos\App\INFOModel\obj\Debug\INFOModel.csprojAssemblyReference.cache
+C:\Users\33069\source\repos\App\INFOModel\obj\Debug\INFOModel.csproj.CoreCompileInputs.cache
+C:\Users\33069\source\repos\App\INFOModel\obj\Debug\INFOModel.dll
+C:\Users\33069\source\repos\App\INFOModel\obj\Debug\INFOModel.pdb
