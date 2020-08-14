@@ -24,9 +24,15 @@ namespace verupserver
             json.SerializerSettings.ContractResolver = new DefaultContractResolver();
             #endregion
            
-            //GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
+           // GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
             GlobalConfiguration.Configure(o => {
                 o.EnableCors(new EnableCorsAttribute("*","*","*"));
+                o.MapHttpAttributeRoutes();
+                o.Routes.MapHttpRoute(
+                   name: "DefaultApi",
+                   routeTemplate: "api/{controller}/{action}/{id}",
+                   defaults: new { id = RouteParameter.Optional }
+               );
             });
         }
     }
