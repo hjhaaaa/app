@@ -94,7 +94,7 @@ namespace verupserver.Controllers
         {
             using (var app =new dbcontext())
             {
-              var count=  app.MDapper.Query<UserInfo>("select count(1) from userinfo where mobile=@mobile and PwdMd5=@PwdMd5 and Status=0",new { mobile= mobile,PwdMd5 = pwd.Md5Deal()}).FirstOrDefault();
+              var count=  app.MDapper.Query<UserInfo>("select * from userinfo where mobile=@mobile and PwdMd5=@PwdMd5 and Status=0",new { mobile= mobile,PwdMd5 = pwd.Md5Deal()}).FirstOrDefault();
                 if(count==null)
                 {
                     return new WebapiresultM { code = webapicode.fail, msg = "账号密码错误" };
