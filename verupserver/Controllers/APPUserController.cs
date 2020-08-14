@@ -123,7 +123,7 @@ namespace verupserver.Controllers
                 if (!pwd.IsPassword()) {
                     return new Webapiresult { code = webapicode.fail,msg = "密码格式不正确" };
                 }
-                int count = app.MDapper.Query<int>("select count(1) from userinfo where mobile=@mobile and PwdMd5=@PwdMd5", new { mobile = mobile,PwdMd5 = pwd.Md5Deal() }).FirstOrDefault();
+                int count = app.MDapper.Query<int>("select count(1) from userinfo where mobile=@mobile ", new { mobile = mobile,PwdMd5 = pwd.Md5Deal() }).FirstOrDefault();
                 if (count > 0)
                 {
                     return new Webapiresult { code = webapicode.fail, msg = "此用户已注册" };
