@@ -23,7 +23,7 @@ namespace verupserver
             json.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.None;
             json.SerializerSettings.ContractResolver = new DefaultContractResolver();
             #endregion
-            GlobalConfiguration.Configure(WebApiConfig.Register);
+           
             //GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
             GlobalConfiguration.Configure(o => {
                 o.EnableCors(new EnableCorsAttribute("*","*","*"));
