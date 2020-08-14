@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace common.Tool
@@ -22,6 +23,38 @@ namespace common.Tool
             }
             return pwd;
            
+        }
+        /// <summary>
+        /// 验证手机合法性
+        /// </summary>
+        /// <param name="s">手机号</param>
+        /// <returns></returns>
+        public static bool IsMobile(this string s)
+        {
+            if (s.NullOrEmpty())
+                return false;
+            var reg =
+                new Regex(
+                    @"^1\d{10}$");
+            return reg.IsMatch(s);
+        }
+        public static bool NullOrEmpty(this string str)
+        {
+            if (str != null) {
+                //str = str.Trim(new[] { '\t', '\r', '\n', ' ' });
+                str = str.Trim();
+            }
+            return string.IsNullOrEmpty(str);
+        }
+        public static bool IsPassword(this string s)
+        {
+            if (s != null)
+                s = s.Trim();
+            if (s.NullOrEmpty())
+                return false;
+            //^.{6,20}$  密码长度
+            var reg = new Regex("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$");
+            return reg.IsMatch(s);
         }
     }
 }

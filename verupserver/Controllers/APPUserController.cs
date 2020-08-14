@@ -117,6 +117,12 @@ namespace verupserver.Controllers
         {
             using (var app = new dbcontext())
             {
+                if (!mobile.IsMobile()) {
+                    return new Webapiresult { code = webapicode.fail,msg = "手机号格式不正确" };
+                }
+                if (!pwd.IsPassword()) {
+                    return new Webapiresult { code = webapicode.fail,msg = "密码格式不正确" };
+                }
                 int count = app.MDapper.Query<int>("select count(1) from userinfo where mobile=@mobile and PwdMd5=@PwdMd5", new { mobile = mobile,PwdMd5 = pwd.Md5Deal() }).FirstOrDefault();
                 if (count > 0)
                 {
