@@ -90,18 +90,18 @@ namespace verupserver.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("api/app/user/login")]
-        public Webapiresult login(string mobile,string pwd)
+        public WebapiresultM login(string mobile,string pwd)
         {
             using (var app =new dbcontext())
             {
-              int count=  app.MDapper.Query<int>("select count(1) from userinfo where mobile=@mobile and PwdMd5=@PwdMd5 and Status=0",new { mobile= mobile,PwdMd5 = pwd.Md5Deal()}).FirstOrDefault();
-                if(count==0)
+              var count=  app.MDapper.Query<UserInfo>("select count(1) from userinfo where mobile=@mobile and PwdMd5=@PwdMd5 and Status=0",new { mobile= mobile,PwdMd5 = pwd.Md5Deal()}).FirstOrDefault();
+                if(count==null)
                 {
-                    return new Webapiresult { code = webapicode.fail, msg = "账号密码错误" };
+                    return new WebapiresultM { code = webapicode.fail, msg = "账号密码错误" };
                 }
                 else
                 {
-                    return new Webapiresult { code = webapicode.ok, msg = "ok" };
+                    return new WebapiresultM { code = webapicode.ok, msg = "ok",Data=mobile,Data2= count.UserName };
                 }
             }              
         }

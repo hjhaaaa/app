@@ -15,4 +15,10 @@ namespace common
         ok=1,
         fail=2
     }
+    public class WebapiresultM: Webapiresult
+    {
+       
+        public string Data { get; set; }
+        public string Data2 { get; set; }
+    }
 }
