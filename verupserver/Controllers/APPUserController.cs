@@ -1,4 +1,6 @@
-﻿using common;
+﻿using App.Cache.LoginCache;
+using AppUser.App_Start;
+using common;
 using common.Tool;
 using Dapper;
 using Model;
@@ -90,18 +92,22 @@ namespace verupserver.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("api/app/user/login")]
-        public WebapiresultM login(string mobile,string pwd)
+        public WebapiresultLogin login(string mobile,string pwd)
         {
             using (var app =new dbcontext())
             {
               var count=  app.MDapper.Query<UserInfo>("select * from userinfo where mobile=@mobile and PwdMd5=@PwdMd5 and Status=0",new { mobile= mobile,PwdMd5 = pwd.Md5Deal()}).FirstOrDefault();
                 if(count==null)
                 {
-                    return new WebapiresultM { code = webapicode.fail, msg = "账号密码错误" };
+                    return new WebapiresultLogin { code = Webapiresult. webapicode.fail, msg = "账号密码错误" };
                 }
                 else
                 {
-                    return new WebapiresultM { code = webapicode.ok, msg = "ok",Data=mobile,Data2= count.UserName };
+                    var Token = Guid.NewGuid().ToString("N");
+                    LoginCache loginCache = new LoginCache(count.UserToken);
+                    loginCache.LoginToken = Token;
+                    loginCache.Set();
+                    return new WebapiresultLogin { code = Webapiresult.webapicode.ok, msg = "ok",Data=mobile,Data2= count.UserName,Usertoken = count.UserToken,Token= Token };
                 }
             }              
         }
@@ -118,15 +124,15 @@ namespace verupserver.Controllers
             using (var app = new dbcontext())
             {
                 if (!mobile.IsMobile()) {
-                    return new Webapiresult { code = webapicode.fail,msg = "手机号格式不正确" };
+                    return new Webapiresult { code = Webapiresult.webapicode.fail,msg = "手机号格式不正确" };
                 }
                 if (!pwd.IsPassword()) {
-                    return new Webapiresult { code = webapicode.fail,msg = "密码格式不正确" };
+                    return new Webapiresult { code = Webapiresult.webapicode.fail,msg = "密码格式不正确" };
                 }
                 int count = app.MDapper.Query<int>("select count(1) from userinfo where mobile=@mobile ", new { mobile = mobile,PwdMd5 = pwd.Md5Deal() }).FirstOrDefault();
                 if (count > 0)
                 {
-                    return new Webapiresult { code = webapicode.fail, msg = "此用户已注册" };
+                    return new Webapiresult { code = Webapiresult.webapicode.fail, msg = "此用户已注册" };
                 }
                 else
                 {
@@ -140,9 +146,29 @@ namespace verupserver.Controllers
                         PwdMd5 = pwd.Md5Deal()
                     };
                     app.MDapper.Insert(usersinfo);
-                    return new Webapiresult { code = webapicode.ok, msg = "ok" };
+                    return new Webapiresult { code = Webapiresult.webapicode.ok, msg = "ok" };
                 }
             }
+        }
+        /// <summary>
+        /// 设置用户昵称
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [TokenFilter(IsCheckLogin=true)]
+        [Route("api/app/user/setusername")]
+        public Webapiresult setusername(string name)
+        {
+            var UserToken=TokenFilter.User.UserToken;
+            using (var app = new dbcontext()) {
+                var user = app.MDapper.Query<UserInfo>("select * from userinfo where UserToken=@UserToken ",new { UserToken = UserToken,}).FirstOrDefault();
+                if (user != null) {
+                    user.UserName = name;
+                    app.MDapper.Update(user);
+                }
+            }
+                return new Webapiresult { code = Webapiresult.webapicode.ok,msg = "ok" };
         }
         public class Note
         {
@@ -204,7 +230,7 @@ namespace verupserver.Controllers
                 }
                 return new Webapiresult
                 {
-                    code = webapicode.ok,
+                    code = Webapiresult.webapicode.ok,
                     msg = "ok"
                 };
             }

@@ -120,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
+    <Compile Include="App_Start\TokenFilter.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\APPInfoController.cs" />
     <Compile Include="Controllers\APPUserController.cs" />
@@ -142,6 +143,10 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\App.Cache\App.Cache.csproj">
+      <Project>{628D568A-EF74-4202-A6F2-9537F96D0E21}</Project>
+      <Name>App.Cache</Name>
+    </ProjectReference>
     <ProjectReference Include="..\common\common.csproj">
       <Project>{3e51b8c0-d45b-4a52-9256-e1a2b2f82859}</Project>
       <Name>common</Name>
