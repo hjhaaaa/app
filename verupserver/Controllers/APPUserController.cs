@@ -51,7 +51,7 @@ namespace verupserver.Controllers
             {
                 return app.MDapper.Query<string>("select logo from  logo  where  status=1").FirstOrDefault();
             }
-            return "";
+            
         }
         [HttpGet]
         [Route("download/file")]
@@ -108,6 +108,10 @@ namespace verupserver.Controllers
                     LoginCache loginCache = new LoginCache(count.UserToken);
                     loginCache.LoginToken = Token;
                     loginCache.Set();
+                    TokenFilter.LoginUser user = new TokenFilter.LoginUser {
+                        Mobile = mobile,Name = count.UserName,Token = Token,UserToken = count.UserToken
+                    };
+                    TokenFilter.SetCookie(user,DateTime.Now.AddDays(7));
                     return new WebapiresultLogin { code = Webapiresult.webapicode.ok, msg = "ok",Data=mobile,Data2= count.UserName,Usertoken = count.UserToken,Token= Token };
                 }
             }              

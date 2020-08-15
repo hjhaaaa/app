@@ -56,5 +56,6 @@ namespace common.Tool
             var reg = new Regex("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$");
             return reg.IsMatch(s);
         }
+        
     }
 }
