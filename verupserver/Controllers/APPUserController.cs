@@ -22,7 +22,7 @@ namespace verupserver.Controllers
 {
     public class APPUserController : ApiController
     {
-      
+        NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
       
         [HttpGet]
         [Route("api/compareveison/cop")]
@@ -94,6 +94,7 @@ namespace verupserver.Controllers
         [Route("api/app/user/login")]
         public WebapiresultLogin login(string mobile,string pwd)
         {
+           
             using (var app =new dbcontext())
             {
               var count=  app.MDapper.Query<UserInfo>("select * from userinfo where mobile=@mobile and PwdMd5=@PwdMd5 and Status=0",new { mobile= mobile,PwdMd5 = pwd.Md5Deal()}).FirstOrDefault();

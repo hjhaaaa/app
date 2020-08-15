@@ -16,10 +16,12 @@ namespace AppUser.App_Start
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method,AllowMultiple = false)]
     public class TokenFilter : FilterAttribute, IAuthorizationFilter
-    { /// <summary>
-      /// 方法是否需要 登陆校验
-      /// </summary>
-        public bool IsCheckLogin { get; set; }
+    {
+        NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        /// <summary>
+        /// 方法是否需要 登陆校验
+        /// </summary>
+        public bool IsCheckLogin { get; set; } = false;
         private static string app_usertoken = "app_usertoken";
         private static string app_token = "app_token";
         private static string app_mobile = "app_mobile";
@@ -78,12 +80,13 @@ namespace AppUser.App_Start
             try {
                 app_usertoken = actionContext.Request.Headers.GetCookies()[0].Cookies.First(x => x.Name == app_usertoken).Value;
                 app_token = actionContext.Request.Headers.GetCookies()[0].Cookies.First(x => x.Name == app_token).Value;
-            } catch {
+            } catch(Exception ex) {
                 TokenFilter.RemoveLoginCookie();
+                logger.Info(ex.ToString());
                 return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = new ObjectContent<Webapiresult>(new Webapiresult {
                         code = Webapiresult.webapicode.tokenfail,
-                        msg = $"token失效，请重新登陆",
+                        msg = $"获取token失败，请重试",
                     },GlobalConfiguration.Configuration.Formatters.JsonFormatter)
                 });
             }

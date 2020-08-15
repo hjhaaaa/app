@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Serialization;
+﻿using AppUser.App_Start;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,7 @@ namespace verupserver
            // GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
             GlobalConfiguration.Configure(o => {
                 o.EnableCors(new EnableCorsAttribute("*","*","*"));
+                o.Filters.Add(new TokenFilter( ));
                 o.MapHttpAttributeRoutes();
                 o.Routes.MapHttpRoute(
                    name: "DefaultApi",
