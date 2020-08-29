@@ -27,7 +27,7 @@ namespace AppUser.App_Start
         private static string app_token = "app_token";
         private static string app_mobile = "app_mobile";
         private static string app_name = "app_name";
-        private static string CookieDomain = "119.45.204.247";
+        private static string CookieDomain = "www.taohuadao.club";
         private static string CookieUser = "CookieUser";
         private static string CookiePath = "/";
 
@@ -35,7 +35,7 @@ namespace AppUser.App_Start
         {
             {
                 var authCookie = new HttpCookie(app_usertoken,u.UserToken);
-                //authCookie.Domain = CookieDomain;
+                authCookie.Domain = CookieDomain;
                 //让所有的请求都带上前缀 节约流量
                 authCookie.Path = CookiePath;
                 //authCookie.HttpOnly = true;
@@ -45,7 +45,7 @@ namespace AppUser.App_Start
             }
             {
                 var authCookie = new HttpCookie(app_mobile,u.Mobile);
-               // authCookie.Domain = CookieDomain;
+                authCookie.Domain = CookieDomain;
                 //让所有的请求都带上前缀 节约流量
                 authCookie.Path = CookiePath;
                 //authCookie.HttpOnly = true;
@@ -55,7 +55,7 @@ namespace AppUser.App_Start
             }
             {
                 var authCookie = new HttpCookie(app_token,u.Token);
-               // authCookie.Domain = CookieDomain;
+                authCookie.Domain = CookieDomain;
                 //让所有的请求都带上前缀 节约流量
                 authCookie.Path = CookiePath;
                 //authCookie.HttpOnly = true;
@@ -65,7 +65,7 @@ namespace AppUser.App_Start
             }
             {
                 var authCookie = new HttpCookie(app_name,u.Name);
-                //authCookie.Domain = CookieDomain;
+                authCookie.Domain = CookieDomain;
                 //让所有的请求都带上前缀 节约流量
                 authCookie.Path = CookiePath;
                 //authCookie.HttpOnly = false;
