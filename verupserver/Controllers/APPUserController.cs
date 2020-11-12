@@ -15,6 +15,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 
@@ -240,6 +241,21 @@ namespace verupserver.Controllers
                 };
             }
         }
-
+        [HttpPost]
+        [Route("api/app/user/imgs/upimg")]
+        public async Task< Webapiresult> UpImag()
+        {
+            var context = HttpContext.Current.Request;
+            if (context.Files.Count != 1) {
+                throw new Exception("一次只能上传一个图");
+            }
+           var stream= context.Files[0].InputStream;
+            var path = HttpRuntime.AppDomainAppPath.ToString() + "//";
+            var path2="image//" +DateTime.Now.Ticks+Guid.NewGuid().ToString("N").Substring(0,6)+".jpg";
+            using (FileStream fs = new FileStream(path +path2,FileMode.Create)) {
+                await stream.CopyToAsync(fs);
+            }
+            return Webapiresult.Ok();
+        }
     }
 }

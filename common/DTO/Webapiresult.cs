@@ -15,6 +15,10 @@ namespace common
             fail = 2,
             tokenfail = 3
         }
+        public static Webapiresult Ok()
+        {
+            return new Webapiresult { code = webapicode.ok,msg = "Ok" };
+        }
     }
     
     public class WebapiresultLogin: Webapiresult
