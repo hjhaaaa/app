@@ -101,9 +101,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Model\APPModel.csproj">
+    <ProjectReference Include="..\Model\App.Model.csproj">
       <Project>{9F2AE0FB-D9E6-4822-A23B-F8125029C2A7}</Project>
-      <Name>APPModel</Name>
+      <Name>App.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

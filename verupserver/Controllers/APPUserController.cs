@@ -1,8 +1,10 @@
-﻿using App.Cache.LoginCache;
+﻿using App.Bll;
+using App.Cache.LoginCache;
 using AppUser.App_Start;
 using common;
 using common.Tool;
 using Dapper;
+using INFOModel;
 using Model;
 using Model.User;
 using System;
@@ -24,7 +26,11 @@ namespace verupserver.Controllers
     public class APPUserController : ApiController
     {
         NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
-      
+        /// <summary>
+        /// 版本比较
+        /// </summary>
+        /// <param name="version"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("api/compareveison/cop")]
         public List<versioninfo> cop(int version)
@@ -40,20 +46,22 @@ namespace verupserver.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("api/download/logo")]
+        [Route("api/app/logo")]
         public string getlogo()
         {
-            //string[] vss = File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + "bin\\logo.txt");
-            //foreach(var v in vss)
-            //{
-            //    if (!v.StartsWith("#")) { return v; }
-            //}
+            
             using (var app = new dbcontext())
             {
-                return app.MDapper.Query<string>("select logo from  logo  where  status=1").FirstOrDefault();
+                return app.MDapper.Query<string>("select logo from  applogo  where  status=0").FirstOrDefault();
             }
             
         }
+        /// <summary>
+        /// 下载更新文件
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="version"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("download/file")]
         public async Task<HttpResponseMessage> download(string file ,string version)
@@ -92,7 +100,7 @@ namespace verupserver.Controllers
         /// <param name="pwd"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("api/app/user/login")]
+        [Route("api/app/user/login")][TokenFilter(IsCheckLogin =false)]
         public WebapiresultLogin login(string mobile,string pwd)
         {
            
@@ -125,6 +133,7 @@ namespace verupserver.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("api/app/user/reg")]
+        [TokenFilter(IsCheckLogin = false)]
         public Webapiresult reg(string mobile, string pwd)
         {
             using (var app = new dbcontext())
@@ -176,27 +185,21 @@ namespace verupserver.Controllers
             }
                 return new Webapiresult { code = Webapiresult.webapicode.ok,msg = "ok" };
         }
-        public class Note
-        {
-            public string Title {
-                get;
-                set;
-            }
-            public string Notes { get; set; }
-            public int Id { get; set; }
-        }
+        
         /// <summary>
         /// 日记列表
         /// </summary>
         /// <param name="Mobile"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("api/note/list")]
-        public List<Note> notelist(string Mobile)
+        [Route("api/info/note/list")]
+        public List<TbUserNote> notelist()
         {
-            using (var app = new dbcontext())
+            var UserToken = TokenFilter.User.UserToken;
+            var userinfo = UserBll.GetUserInfo(UserToken);
+            using (var app = new InfoDbContext())
             {
-              return  app.MDapper.Query<Note>("select id,title ,note as Notes from  note where mobile=@mobile and del=0",new { mobile =Mobile}).ToList();
+              return  app.MDapper.Query<TbUserNote>("select id,title , Notes from  TbUserNote where UserId=@UserId and IsDelete=0",new { UserId = userinfo.Id }).ToList();
             }
         }
         /// <summary>
@@ -209,30 +212,33 @@ namespace verupserver.Controllers
         /// <param name="isadd">1 add 2up 3 del</param>
         /// <returns></returns>
         [HttpGet]
-        [Route("api/note/notesave")]
-        public Webapiresult notesave(string Mobile,int Id,string title,string note,int isadd)
+        [Route("api/info/note/noteset")]
+        public Webapiresult notesave(int Id,string title,string note,int isadd)
         {
-            using (var app = new dbcontext())
+            var UserToken = TokenFilter.User.UserToken;
+           var userinfo= UserBll.GetUserInfo(UserToken);
+            using (var app = new InfoDbContext())
             {  
                 if(isadd==1)
                 {
-                    //NoteModel note1 = new NoteModel
-                    //{
-                    //    Del = 0,
-                    //    Mobile = Mobile,
-                    //    Note = note,
-                    //    Title = title
-                    //};
-                  //  app.MDapper.Insert(note1);
-                                
+                    TbUserNote note1 = new TbUserNote {
+                        CTime=DateTime.Now,
+                         UserId= userinfo.Id,
+                          IsDelete=0,
+                           Notes=note,
+                            Title=title, 
+                             UTime=DateTime.Now
+                    };
+                    app.MDapper.Insert(note1);
+
                 }
                 else if(isadd==2)
                 {
-                    app.MDapper.Execute("update  note set title=@title  ,note=@note  where mobile=@mobile and id=@id", new { mobile = Mobile, id = Id, title = title, note = note });
+                    app.MDapper.Execute("update  TbUserNote set title=@title  ,Notes=@note  where  id=@id", new {  id = Id, title = title, note = note });
                 }
                 else if(isadd==3)
                 {
-                    app.MDapper.Execute("delete  from note   where mobile=@mobile and id=@id", new { mobile = Mobile, id = Id});                    
+                    app.MDapper.Execute("update   TbUserNote   set  IsDelete=1 where  id=@id", new {  id = Id});                    
                 }
                 return new Webapiresult
                 {
@@ -241,6 +247,10 @@ namespace verupserver.Controllers
                 };
             }
         }
+        /// <summary>
+        /// 上传图片
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         [Route("api/app/user/imgs/upimg")]
         public async Task< Webapiresult> UpImag()

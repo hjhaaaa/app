@@ -134,9 +134,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Model\APPModel.csproj">
+    <ProjectReference Include="..\Model\App.Model.csproj">
       <Project>{9f2ae0fb-d9e6-4822-a23b-f8125029c2a7}</Project>
-      <Name>APPModel</Name>
+      <Name>App.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\versionup\versionup.csproj">
       <Project>{3c035ae8-982b-4640-a41c-de884c7be8cf}</Project>

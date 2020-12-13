@@ -32,7 +32,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,10 +51,10 @@
       <HintPath>..\packages\Dapper.SimpleCRUD.2.2.0\lib\netstandard2.0\Dapper.SimpleCRUD.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="FromHeaderAttribute, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FromHeaderAttribute.2.0.4\lib\net45\FromHeaderAttribute.dll</HintPath>
@@ -72,8 +72,8 @@
     <Reference Include="System.Data.SQLite, Version=1.0.110.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Core.1.0.110.0\lib\net46\System.Data.SQLite.dll</HintPath>
     </Reference>
-    <Reference Include="System.Data.SQLite.EF6, Version=1.0.110.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.110.0\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.108.0\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.SQLite.Linq, Version=1.0.110.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.110.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
@@ -158,17 +158,25 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\App.Bll\App.Bll.csproj">
+      <Project>{A37F2F55-D9D4-4931-856B-5FBA209AB684}</Project>
+      <Name>App.Bll</Name>
+    </ProjectReference>
     <ProjectReference Include="..\App.Cache\App.Cache.csproj">
       <Project>{628D568A-EF74-4202-A6F2-9537F96D0E21}</Project>
       <Name>App.Cache</Name>
     </ProjectReference>
-    <ProjectReference Include="..\common\common.csproj">
+    <ProjectReference Include="..\common\Common.csproj">
       <Project>{3e51b8c0-d45b-4a52-9256-e1a2b2f82859}</Project>
-      <Name>common</Name>
+      <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Model\APPModel.csproj">
+    <ProjectReference Include="..\INFOModel\Info.Model.csproj">
+      <Project>{5C00C2BE-874A-4496-9D71-A74F024DF509}</Project>
+      <Name>Info.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\App.Model.csproj">
       <Project>{9f2ae0fb-d9e6-4822-a23b-f8125029c2a7}</Project>
-      <Name>APPModel</Name>
+      <Name>App.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

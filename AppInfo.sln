@@ -3,23 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2019
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "common", "common\common.csproj", "{3E51B8C0-D45B-4A52-9256-E1A2B2F82859}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "common\Common.csproj", "{3E51B8C0-D45B-4A52-9256-E1A2B2F82859}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "main", "main\main.csproj", "{8C76BF06-3C4C-4B29-901D-E094A968228F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APPModel", "Model\APPModel.csproj", "{9F2AE0FB-D9E6-4822-A23B-F8125029C2A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Model", "Model\App.Model.csproj", "{9F2AE0FB-D9E6-4822-A23B-F8125029C2A7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "versionup", "versionup\versionup.csproj", "{3C035AE8-982B-4640-A41C-DE884C7BE8CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.User.Api", "verupserver\App.User.Api.csproj", "{9879E9FE-6A8C-4903-B38B-D9090B173D48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "INFOModel", "INFOModel\INFOModel.csproj", "{5C00C2BE-874A-4496-9D71-A74F024DF509}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Info.Model", "INFOModel\Info.Model.csproj", "{5C00C2BE-874A-4496-9D71-A74F024DF509}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.DTO", "App.DTO\App.DTO.csproj", "{8FF5AFFC-278A-47F1-890D-9FF91C25016B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Cache", "App.Cache\App.Cache.csproj", "{628D568A-EF74-4202-A6F2-9537F96D0E21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Cache", "App.Cache\App.Cache.csproj", "{628D568A-EF74-4202-A6F2-9537F96D0E21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APPBll", "APPBll\APPBll.csproj", "{0574177E-3A78-4DBC-871F-AFBA8B5F7285}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Bll", "App.Bll\App.Bll.csproj", "{A37F2F55-D9D4-4931-856B-5FBA209AB684}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{F06B0F46-3A4C-466A-B6F1-CB7915AA9E80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,13 +61,17 @@ Global
 		{628D568A-EF74-4202-A6F2-9537F96D0E21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{628D568A-EF74-4202-A6F2-9537F96D0E21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{628D568A-EF74-4202-A6F2-9537F96D0E21}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0574177E-3A78-4DBC-871F-AFBA8B5F7285}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0574177E-3A78-4DBC-871F-AFBA8B5F7285}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0574177E-3A78-4DBC-871F-AFBA8B5F7285}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0574177E-3A78-4DBC-871F-AFBA8B5F7285}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A37F2F55-D9D4-4931-856B-5FBA209AB684}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A37F2F55-D9D4-4931-856B-5FBA209AB684}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A37F2F55-D9D4-4931-856B-5FBA209AB684}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A37F2F55-D9D4-4931-856B-5FBA209AB684}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8C76BF06-3C4C-4B29-901D-E094A968228F} = {F06B0F46-3A4C-466A-B6F1-CB7915AA9E80}
+		{3C035AE8-982B-4640-A41C-DE884C7BE8CF} = {F06B0F46-3A4C-466A-B6F1-CB7915AA9E80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {18577BAA-4748-41B6-93A8-FC3FFD217802}

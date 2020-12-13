@@ -22,14 +22,25 @@ namespace AppUser.App_Start
         /// <summary>
         /// 方法是否需要 登陆校验
         /// </summary>
-        public bool IsCheckLogin { get; set; } = false;
+        public bool IsCheckLogin { get; set; } = true;
         private static string app_usertoken = "app_usertoken";
+        /// <summary>
+        /// 单点登陆校验token
+        /// </summary>
         private static string app_token = "app_token";
         private static string app_mobile = "app_mobile";
         private static string app_name = "app_name";
+
+
         private static string CookieDomain = "www.taohuadao.club";
         private static string CookieUser = "CookieUser";
         private static string CookiePath = "/";
+        public static LoginUser User {
+            get {
+                var loginUser = HttpContext.Current.Items[CookieUser] as LoginUser;
+                return loginUser;
+            }
+        }
 
         public static void SetCookie(LoginUser u,DateTime? Expires = null)
         {
@@ -168,13 +179,7 @@ namespace AppUser.App_Start
             HttpContext.Current.Items[CookieUser] = user;
             return continuation();
         }
-        public static LoginUser User{
-            get {
-                var loginUser = HttpContext.Current.Items[CookieUser] as LoginUser;
-                return loginUser;
-            }
-        }
-
+       
         public class LoginUser
         {
             /// <summary>
