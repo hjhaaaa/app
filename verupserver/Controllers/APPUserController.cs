@@ -47,6 +47,7 @@ namespace verupserver.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("api/app/logo")]
+        [TokenFilter(IsCheckLogin = false)]
         public string getlogo()
         {
             
