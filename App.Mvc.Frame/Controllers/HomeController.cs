@@ -18,7 +18,7 @@ namespace App.Mvc.Frame.Controllers
         {
             using (var app = new dbcontext()) {
                 var logo2 =
-                   app.MDapper.QueryFirstOrDefault<string>("sele1ct logo from  applogo  where  status=0");
+                   app.MDapper.QueryFirstOrDefault<string>("select logo from  applogo  where  status=0");
                
                 return View((object)logo2);
             };

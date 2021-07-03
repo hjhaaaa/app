@@ -1,12 +1,13 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - 我的 ASP.NET 应用程序</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+   
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -17,7 +18,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("应用程序名称", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("应用程序名称","Index","Home",new { area = "" },new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -40,6 +41,31 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    @Scripts.Render("~/bundles/custom")
+    @RenderSection("scripts",required: false)
+    @*<script>
+        $(document).ready(function () {
+            $("#bt11").click(
+                function () {
+                    $.ajax({
+                        type: "get",
+                        url: "http://www.taohuadao.club/api/app/logo",
+                        dataType: "json",
+                        data: "",
+                        contentType: 'application/json;charset=utf-8',//向后台传送格式
+                        success: function (data) {
+                            $("#h11").html(data);
+                        },
+                        error: function (jqXHR) {
+                            alert("发生错误a：" + jqXHR.status + jqXHR.responseText);
+                        }
+
+                    })
+                }
+            )
+
+
+        })
+    </script>*@
 </body>
 </html>
