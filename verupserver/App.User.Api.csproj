@@ -164,6 +164,10 @@
       <Project>{628D568A-EF74-4202-A6F2-9537F96D0E21}</Project>
       <Name>App.Cache</Name>
     </ProjectReference>
+    <ProjectReference Include="..\App.DTO\App.DTO.csproj">
+      <Project>{8ff5affc-278a-47f1-890d-9ff91c25016b}</Project>
+      <Name>App.DTO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\common\Common.csproj">
       <Project>{3e51b8c0-d45b-4a52-9256-e1a2b2f82859}</Project>
       <Name>Common</Name>

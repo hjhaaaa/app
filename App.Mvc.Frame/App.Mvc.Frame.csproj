@@ -210,10 +210,21 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\App.DTO\App.DTO.csproj">
+      <Project>{8ff5affc-278a-47f1-890d-9ff91c25016b}</Project>
+      <Name>App.DTO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\common\Common.csproj">
       <Project>{3e51b8c0-d45b-4a52-9256-e1a2b2f82859}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Model\App.Model.csproj">
+      <Project>{9f2ae0fb-d9e6-4822-a23b-f8125029c2a7}</Project>
+      <Name>App.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

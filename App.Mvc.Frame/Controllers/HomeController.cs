@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using App.DTO.User;
 using common;
 using Dapper;
+using Model.User;
 
 namespace App.Mvc.Frame.Controllers
 {
@@ -19,8 +21,12 @@ namespace App.Mvc.Frame.Controllers
             using (var app = new dbcontext()) {
                 var logo2 =
                    app.MDapper.QueryFirstOrDefault<string>("select logo from  applogo  where  status=0");
-               
-                return View((object)logo2);
+               var userinfos = app.MDapper.Query<UserInfo>("select *  from  UserInfo ").ToList();
+                UsersDTO usersDTO = new UsersDTO { 
+                 Logo=logo2,
+                  Users=userinfos
+                };
+                return View((object)usersDTO);
             };
             
         }

@@ -1,17 +1,39 @@
 ﻿
-
+@Model App.DTO.User.UsersDTO
 @{
     ViewData["Title"] = "MyView";
+
 }
 
 <h1>MyView1</h1>
 
-<h1>@((string)Model)
 
-</h1>
-<h1 id="h11">
-    default
-</h1>
-<button id="bt11" >点击</button>
+
+<img id="myimg" class="img-rounded" alt="上海鲜花港 - 郁金香"/>
+<button id="bt11">点击获取logo</button>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>手机号
+            </th>
+            <th>姓名</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var v in Model.Users) {
+            <tr>
+                <td>@v.Id</td>
+                <td>@v.Mobile</td>
+                <td>@v.UserName</td>
+                <td>
+                    <a>编辑</a>
+                    <a>删除</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
 
 

@@ -1,5 +1,6 @@
 ﻿using App.Bll;
 using App.Cache.LoginCache;
+using App.DTO;
 using AppUser.App_Start;
 using common;
 using common.Tool;
@@ -48,12 +49,13 @@ namespace verupserver.Controllers
         [HttpGet]
         [Route("api/app/logo")]
         [TokenFilter(IsCheckLogin = false)]
-        public string getlogo()
+        public IWebApiResult getlogo()
         {
             
             using (var app = new dbcontext())
             {
-                return app.MDapper.Query<string>("select logo from  applogo  where  status=0").FirstOrDefault();
+                var l= app.MDapper.Query<string>("select logo from  applogo  where  status=0").FirstOrDefault();
+                return WebApiResult<string>.Success(l);
             }
             
         }
