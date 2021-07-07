@@ -1,17 +1,18 @@
-﻿using App.Bll;
+﻿using App.Api;
+using App.Bll;
 using App.Cache.LoginCache;
 using App.DTO;
-using AppUser.App_Start;
+
 using common;
 using common.Tool;
 using Dapper;
-using INFOModel;
+
 using Model;
 using Model.User;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Data.SQLite;
+
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -22,8 +23,9 @@ using System.Web;
 using System.Web.Http;
 
 
-namespace verupserver.Controllers
+namespace App.Api
 {
+    [TokenFilter(IsCheckLogin = false)]
     public class APPUserController : ApiController
     {
         NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -33,13 +35,13 @@ namespace verupserver.Controllers
         /// <param name="version"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("api/compareveison/cop")]
+       
         public List<versioninfo> cop(int version)
         {
           //  string path = AppDomain.CurrentDomain.BaseDirectory + "version.txt";
-            using(var app=new dbcontext())
+            using(var app= AppSqlCnn.GetAppCnn())
             {
-                return app.MDapper.Query<versioninfo>("select * from  versioninfo where vindex>@index and isdebug=0", new { index = version }).ToList();
+                return app.Query<versioninfo>("select * from  versioninfo where vindex>@index and isdebug=0", new { index = version }).ToList();
             }       
         }
         /// <summary>
@@ -47,14 +49,14 @@ namespace verupserver.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("api/app/logo")]
-        [TokenFilter(IsCheckLogin = false)]
+       
+       
         public IWebApiResult getlogo()
         {
             
-            using (var app = new dbcontext())
+            using (var app = AppSqlCnn.GetAppCnn())
             {
-                var l= app.MDapper.Query<string>("select logo from  applogo  where  status=0").FirstOrDefault();
+                var l= app.Query<string>("select logo from  applogo  where  status=0").FirstOrDefault();
                 return WebApiResult<string>.Success(l);
             }
             
@@ -66,7 +68,7 @@ namespace verupserver.Controllers
         /// <param name="version"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("download/file")]
+      
         public async Task<HttpResponseMessage> download(string file ,string version)
         {
             try
@@ -103,13 +105,13 @@ namespace verupserver.Controllers
         /// <param name="pwd"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("api/app/user/login")][TokenFilter(IsCheckLogin =false)]
+        //[Route("api/app/user/login")]
         public WebapiresultLogin login(string mobile,string pwd)
         {
            
-            using (var app =new dbcontext())
+            using (var app = AppSqlCnn.GetAppCnn())
             {
-              var count=  app.MDapper.Query<UserInfo>("select * from userinfo where mobile=@mobile and PwdMd5=@PwdMd5 and Status=0",new { mobile= mobile,PwdMd5 = pwd.Md5Deal()}).FirstOrDefault();
+              var count=  app.Query<UserInfo>("select * from userinfo where mobile=@mobile and PwdMd5=@PwdMd5 and Status=0",new { mobile= mobile,PwdMd5 = pwd.Md5Deal()}).FirstOrDefault();
                 if(count==null)
                 {
                     return new WebapiresultLogin { code = Webapiresult. webapicode.fail, msg = "账号密码错误" };
@@ -135,11 +137,10 @@ namespace verupserver.Controllers
         /// <param name="pwd"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("api/app/user/reg")]
-        [TokenFilter(IsCheckLogin = false)]
+       
         public Webapiresult reg(string mobile, string pwd)
         {
-            using (var app = new dbcontext())
+            using (var app = AppSqlCnn.GetAppCnn())
             {
                 if (!mobile.IsMobile()) {
                     return new Webapiresult { code = Webapiresult.webapicode.fail,msg = "手机号格式不正确" };
@@ -147,7 +148,7 @@ namespace verupserver.Controllers
                 if (!pwd.IsPassword()) {
                     return new Webapiresult { code = Webapiresult.webapicode.fail,msg = "密码格式不正确" };
                 }
-                int count = app.MDapper.Query<int>("select count(1) from userinfo where mobile=@mobile ", new { mobile = mobile,PwdMd5 = pwd.Md5Deal() }).FirstOrDefault();
+                int count = app.Query<int>("select count(1) from userinfo where mobile=@mobile ", new { mobile = mobile,PwdMd5 = pwd.Md5Deal() }).FirstOrDefault();
                 if (count > 0)
                 {
                     return new Webapiresult { code = Webapiresult.webapicode.fail, msg = "此用户已注册" };
@@ -163,7 +164,7 @@ namespace verupserver.Controllers
                         UserToken = Guid.NewGuid().ToString("N"),
                         PwdMd5 = pwd.Md5Deal()
                     };
-                    app.MDapper.Insert(usersinfo);
+                    app.Insert(usersinfo);
                     return new Webapiresult { code = Webapiresult.webapicode.ok, msg = "ok" };
                 }
             }
@@ -175,15 +176,15 @@ namespace verupserver.Controllers
         /// <returns></returns>
         [HttpGet]
         [TokenFilter(IsCheckLogin=true)]
-        [Route("api/app/user/setusername")]
+      
         public Webapiresult setusername(string name)
         {
             var UserToken=TokenFilter.User.UserToken;
-            using (var app = new dbcontext()) {
-                var user = app.MDapper.Query<UserInfo>("select * from userinfo where UserToken=@UserToken ",new { UserToken = UserToken,}).FirstOrDefault();
+            using (var app = AppSqlCnn.GetAppCnn()) {
+                var user = app.Query<UserInfo>("select * from userinfo where UserToken=@UserToken ",new { UserToken = UserToken,}).FirstOrDefault();
                 if (user != null) {
                     user.UserName = name;
-                    app.MDapper.Update(user);
+                    app.Update(user);
                 }
             }
                 return new Webapiresult { code = Webapiresult.webapicode.ok,msg = "ok" };
@@ -195,7 +196,7 @@ namespace verupserver.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [Route("api/app/user/imgs/upimg")]
+      
         public async Task< Webapiresult> UpImag()
         {
             var context = HttpContext.Current.Request;

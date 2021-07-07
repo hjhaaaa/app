@@ -1,5 +1,5 @@
 ﻿using App.Bll;
-using AppUser.App_Start;
+
 using common;
 using Dapper;
 using INFOModel;
@@ -10,7 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace AppUser.Controllers
+namespace App.Api
 {   
     
     public class APPInfoController : ApiController
@@ -21,13 +21,13 @@ namespace AppUser.Controllers
         /// <param name="Mobile"></param>
         /// <returns></returns>
         [HttpGet]
-        //[Route("api/info/note/list")]
+
         public List<TbUserNote> notelist()
         {
             var UserToken = TokenFilter.User.UserToken;
             var userinfo = UserBll.GetUserInfo(UserToken);
-            using (var app = new InfoDbContext()) {
-                return app.MDapper.Query<TbUserNote>("select id,title , Notes from  TbUserNote where UserId=@UserId and IsDelete=0",new { UserId = userinfo.Id }).ToList();
+            using (var app = AppSqlCnn.GetInfoCnn()) {
+                return app.Query<TbUserNote>("select id,title , Notes from  TbUserNote where UserId=@UserId and IsDelete=0",new { UserId = userinfo.Id }).ToList();
             }
         }
         /// <summary>
@@ -40,12 +40,12 @@ namespace AppUser.Controllers
         /// <param name="isadd">1 add 2up 3 del</param>
         /// <returns></returns>
         [HttpGet]
-        //[Route("api/info/note/noteset")]
+
         public Webapiresult notesave(int Id,string title,string note,int isadd)
         {
             var UserToken = TokenFilter.User.UserToken;
             var userinfo = UserBll.GetUserInfo(UserToken);
-            using (var app = new InfoDbContext()) {
+            using (var app = AppSqlCnn.GetInfoCnn()) {
                 if (isadd == 1) {
                     TbUserNote note1 = new TbUserNote {
                         CTime = DateTime.Now,
@@ -55,12 +55,12 @@ namespace AppUser.Controllers
                         Title = title,
                         UTime = DateTime.Now
                     };
-                    app.MDapper.Insert(note1);
+                    app.Insert(note1);
 
                 } else if (isadd == 2) {
-                    app.MDapper.Execute("update  TbUserNote set title=@title  ,Notes=@note  where  id=@id",new { id = Id,title = title,note = note });
+                    app.Execute("update  TbUserNote set title=@title  ,Notes=@note  where  id=@id",new { id = Id,title = title,note = note });
                 } else if (isadd == 3) {
-                    app.MDapper.Execute("update   TbUserNote   set  IsDelete=1 where  id=@id",new { id = Id });
+                    app.Execute("update   TbUserNote   set  IsDelete=1 where  id=@id",new { id = Id });
                 }
                 return new Webapiresult {
                     code = Webapiresult.webapicode.ok,
@@ -68,17 +68,6 @@ namespace AppUser.Controllers
                 };
             }
         }
-        [HttpGet]
-        //[Route("api/info/EfTest")]
-
-        [TokenFilter(IsCheckLogin = false)]
-        public Webapiresult EfTest()
-        {
-            UserBll.ADDTbEfUser(new Model.EF.TbEfUser {  Name="hjh",Address="123"});
-            return new Webapiresult {
-                code = Webapiresult.webapicode.ok,
-                msg = "ok"
-            };
-        }
+       
     }
 }

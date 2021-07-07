@@ -9,22 +9,24 @@ using MySql.Data.MySqlClient;
 
 namespace common
 {
-    public class dbcontext:System.Data.Entity.DbContext
+    public class AppSqlCnn
     {
         static string sqlstr = System.Configuration.ConfigurationManager.AppSettings["ConnectionString"];
-        public dbcontext() : base(GetDb(), true)
-        {
-
-        }
-        static DbConnection GetDb()
+        static string sqlInfostr = System.Configuration.ConfigurationManager.AppSettings["DbInfoConnectionString"];
+        public static DbConnection GetAppCnn()
         {
             DbConnection db = new MySqlConnection(sqlstr);
             Dapper.SimpleCRUD.SetDialect(Dapper.SimpleCRUD.Dialect.MySQL);
-           
+
             return db;
         }
-        public DbConnection MDapper {
-            get { return this.Database.Connection; }
+        public static DbConnection GetInfoCnn()
+        {
+            DbConnection db = new MySqlConnection(sqlInfostr);
+            Dapper.SimpleCRUD.SetDialect(Dapper.SimpleCRUD.Dialect.MySQL);
+
+            return db;
         }
+       
     }
 }

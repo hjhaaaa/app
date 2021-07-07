@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace common
-{   
+{
     /// <summary>
     /// info库连接串
     /// </summary>
@@ -31,6 +31,6 @@ namespace common
             get { return this.Database.Connection; }
         }
         public DbSet<TbEfUser> tbEfUsers { get; set; }
-       
+
     }
 }

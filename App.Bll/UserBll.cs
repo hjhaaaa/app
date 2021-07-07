@@ -17,8 +17,8 @@ namespace App.Bll
     {
         public static UserInfo GetUserInfo(string UserToken)
         {
-            using (var app = new dbcontext()) {
-                return app.MDapper.Query("select * from UserInfo where UserToken=@UserToken",new { UserToken = UserToken }
+            using (var app = AppSqlCnn.GetAppCnn()) {
+                return app.Query("select * from UserInfo where UserToken=@UserToken",new { UserToken = UserToken }
                     ).FirstOrDefault();               
             }
         }
