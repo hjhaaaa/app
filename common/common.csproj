@@ -100,6 +100,7 @@
     <Compile Include="ConfigInfo.cs" />
     <Compile Include="Db\Dbcontext.cs" />
     <Compile Include="Db\InfoDbContext.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RedisHelper.cs" />
     <Compile Include="Tool\StringTool.cs" />
@@ -109,6 +110,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Model\App.Model.csproj">
+      <Project>{9f2ae0fb-d9e6-4822-a23b-f8125029c2a7}</Project>
+      <Name>App.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
